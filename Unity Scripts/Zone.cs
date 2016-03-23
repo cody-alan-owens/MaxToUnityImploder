@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace PlanImploder
 {
     public class Zone {
-        public Rectangle Rectangle { get; }
+        public Rectangle Rectangle { get; private set; }
         public Zone Parent;
         public List<Zone> Children;
 
@@ -19,7 +19,7 @@ namespace PlanImploder
         {
             this.Rectangle = space;
             this.Parent = parent;
-            this.Children = null;
+            this.Children = new List<Zone>();
         }
 
         public Zone (Rectangle space, List<Zone> children)
@@ -41,7 +41,7 @@ namespace PlanImploder
         {
             this.Rectangle = space;
             this.Parent = null;
-            this.Children = null;
+            this.Children = new List<Zone>();
         }
     }
 }

@@ -3,10 +3,10 @@ namespace PlanImploder
 {
     public class Point
     {
-        public decimal X { get; }
-        public decimal Y { get; }
-        public decimal Z { get; }
-        public Point(decimal x, decimal y, decimal z)
+        public float X { get; private set; }
+        public float Y { get; private set; }
+        public float Z { get; private set; }
+        public Point(float x, float y, float z)
         {
             this.X = x;
             this.Y = y;

@@ -5,11 +5,11 @@ using System.Linq;
 namespace PlanImploder
 {
     public class Rectangle {
-        public Point UpperLeft { get; }
-        public Point UpperRight { get; }
-        public Point LowerLeft { get; }
-        public Point LowerRight { get; }
-        public decimal Area;
+        public Point UpperLeft { get; private set; }
+        public Point UpperRight { get; private set; }
+        public Point LowerLeft { get; private set; }
+        public Point LowerRight { get; private set; }
+        public float Area;
         public Rectangle(List<Point> points)
         {
             List<Point> pointsOrderedByX = points.OrderBy(o => o.X).ToList();
@@ -22,7 +22,7 @@ namespace PlanImploder
                 this.UpperLeft = pointsOrderedByX[0];
                 this.LowerLeft = pointsOrderedByX[1];
             }
-            if (pointsOrderedByX[2].Y < pointsOrderedByX[3].Y)
+            if (pointsOrderedByX[2].Y > pointsOrderedByX[3].Y)
             {
                 this.UpperRight = pointsOrderedByX[2];
                 this.LowerRight = pointsOrderedByX[3];
@@ -34,13 +34,22 @@ namespace PlanImploder
             }
             this.Area = SetArea();
         }
-        private decimal SetArea()
+        private float SetArea()
         {
-            return (this.UpperRight.X - this.UpperLeft.X) * (this.UpperRight.Y - this.LowerRight.Y);
+            return Math.Abs((this.UpperRight.X - this.UpperLeft.X) * (this.UpperRight.Y - this.LowerRight.Y));
         }
         public List<Point> GetPoints()
         {
             return new List<Point> { this.UpperLeft, this.UpperRight, this.LowerLeft, this.LowerRight };
+        }
+
+        public float GetLength()
+        {
+            return this.UpperRight.X - this.UpperLeft.X;
+        }
+        public float GetWidth()
+        {
+            return this.UpperLeft.Y - this.LowerLeft.Y;
         }
     }
 }
