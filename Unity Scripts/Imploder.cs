@@ -9,6 +9,7 @@ namespace PlanImploder
         public TextAsset BasepointsCSV;
         public TextAsset OptionpointsCSV;
         private ZoneBuilder ZoneBuilder;
+        Dictionary<HierarchyZone, GameObject> ZoneObjects;
 
         void Start()
         {
@@ -23,32 +24,48 @@ namespace PlanImploder
         public void CreateZones()
         {
             this.ZoneBuilder = new ZoneBuilder(ZoneBuilder.PointsInputFormat.MAX);
-            List<Zone> zones = this.ZoneBuilder.GetZones(PointsCSV.text, this.BasepointsCSV.text, this.OptionpointsCSV.text);
-            List<GameObject> zoneObjects = new List<GameObject>();
-            foreach(Zone zone in zones)
+            List<HierarchyZone> zones = this.ZoneBuilder.GetZones(PointsCSV.text, this.BasepointsCSV.text, this.OptionpointsCSV.text);
+            ZoneObjects = new Dictionary<HierarchyZone, GameObject>();
+            for(int i = 0; i < zones.Count; i++)
             {
-                Zone tempZone = zone;
-                if (zone.Parent == null)
-                {
-                    InstantiateGameObjects(ref tempZone, this.transform);
-                }
+                ZoneObjects.Add(zones[i], InstantiateGameObjects(zones[i]).gameObject);
+            }
+            foreach(KeyValuePair<HierarchyZone, GameObject> zoneObject in ZoneObjects)
+            {
+                SetParents(zoneObject.Key, zoneObject.Value.transform);
             }
         }
 
-        private Transform InstantiateGameObjects(ref Zone zone, Transform parent)
+        private Transform InstantiateGameObjects(HierarchyZone zone)
         {
             GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = (new Vector3(zone.Rectangle.UpperLeft.X, zone.Rectangle.UpperLeft.Y, zone.Rectangle.UpperLeft.Z));
-            cube.transform.localScale = (new Vector3(zone.Rectangle.GetLength(), zone.Rectangle.GetWidth(), 300));
-            if(zone.Children!= null)
+            float x = zone.UpperLeft.X;
+            float y = zone.UpperLeft.Y;
+            float z = zone.UpperLeft.Z;
+            if (float.IsInfinity(Mathf.Abs(x)))
             {
-                foreach (Zone child in zone.Children)
-                {
-                    Zone tempZone = child;
-                    InstantiateGameObjects(ref tempZone, cube.transform).SetParent(cube.transform);
-                }
-            }            
+                x = 0;
+            }
+            if (float.IsInfinity(Mathf.Abs(y)))
+            {
+                y = 0;
+            }
+            if (float.IsInfinity(Mathf.Abs(z)))
+            {
+                z = 0;
+            }
+            cube.transform.position = (new Vector3(x,y,z));
+            cube.transform.localScale = (new Vector3(zone.GetLength(), zone.GetWidth(), 300));
             return cube.transform;
+        }
+
+        private Transform SetParents(HierarchyZone zone, Transform zoneTransform)
+        {
+            if (zone.Parent != null)
+            {
+                zoneTransform.SetParent(ZoneObjects[zone.Parent].transform, true);
+            }
+            return zoneTransform;
         }
     }
 }

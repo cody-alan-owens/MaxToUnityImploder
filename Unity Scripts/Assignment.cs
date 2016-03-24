@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace PlanImploder
 {
-    public class Assignment
+    public class Assignment : Arc
     {
-        private Zone Parent;
-        private Zone Child;
-        public Assignment(Zone parent, Zone child)
+        public List<HierarchyZone> Children;
+        public Assignment(List<Point> points, List<HierarchyZone> children) : base(points)
         {
-            this.Parent = parent;
-            this.Child = child;
+            this.Children = children;
+        }
+
+        public Assignment(List<Point> points) : base(points)
+        {
+            this.Children = new List<HierarchyZone>();
         }
     }
 }

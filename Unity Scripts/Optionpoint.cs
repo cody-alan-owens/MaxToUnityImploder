@@ -1,13 +1,22 @@
 ﻿using System;
 namespace PlanImploder
 {
-    public class Optionpoint
+    public class Optionpoint : Point, IPoint
     {
         public Point Point { get; private set; }
-        public Zone Zone;
-        public Optionpoint(Point point)
+        public HierarchyZone Zone;
+        public Optionpoint(Point point) :base(point.X, point.Y, point.Z)
         {
-            this.Point = point;
+
+        }
+        public Optionpoint(float x, float y, float z) : base(x, y, z)
+        {
+
+        }
+
+        public Point GetPoint()
+        {
+            return this.Point;
         }
     }
 }

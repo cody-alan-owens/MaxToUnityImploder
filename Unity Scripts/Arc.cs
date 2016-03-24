@@ -5,16 +5,30 @@ namespace PlanImploder
 {
     public class Arc
     {
-        public List<Point> Points;
-        public Basepoint Basepoint;
-        public List<Optionpoint> Optionpoints;
-        public Zone BaseZone;
-        public Zone OptionZone;
+        public Point Basepoint;
+        public List<Point> Optionpoints;
 
         public Arc(List<Point> points)
         {
-            this.Points = points;
-            this.Optionpoints = new List<Optionpoint>();
+            this.Optionpoints = points;
+        }
+
+        public void SetBasepoint(ref Point point)
+        {
+            if (Basepoint != null)
+            {
+                throw new Exception("Base point already set! Cannot overwrite base point.");
+            }
+            Point refPoint = point;
+            for(int i = 0; i < Optionpoints.Count-1; i++)
+            {
+                if (refPoint.Equals(Optionpoints))
+                {
+                    Basepoint = Optionpoints[i];
+                    Optionpoints.RemoveAt(i);
+                    break;
+                }
+            }
         }
     }
 }

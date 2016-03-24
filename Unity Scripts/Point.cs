@@ -1,7 +1,7 @@
 ﻿using System;
 namespace PlanImploder
 {
-    public class Point
+    public class Point : IPoint
     {
         public float X { get; private set; }
         public float Y { get; private set; }
@@ -11,6 +11,11 @@ namespace PlanImploder
             this.X = x;
             this.Y = y;
             this.Z = z;
+        }
+
+        public Point GetPoint()
+        {
+            return this;
         }
     }
 }
