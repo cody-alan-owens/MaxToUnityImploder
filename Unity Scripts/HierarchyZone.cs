@@ -7,6 +7,7 @@ namespace PlanImploder
         public HierarchyZone Parent;
         public List<HierarchyZone> Children;
         public Assignment Assignment;
+        public string Label;
 
         public HierarchyZone(List<Point> points, HierarchyZone parent, List<HierarchyZone> children) :base(points)
         {

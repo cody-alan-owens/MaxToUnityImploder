@@ -8,6 +8,7 @@ namespace PlanImploder
         public TextAsset PointsCSV;
         public TextAsset BasepointsCSV;
         public TextAsset OptionpointsCSV;
+        public TextAsset TextpointsCSV;
         private ZoneBuilder ZoneBuilder;
         Dictionary<HierarchyZone, GameObject> ZoneObjects;
 
@@ -24,7 +25,7 @@ namespace PlanImploder
         public void CreateZones()
         {
             this.ZoneBuilder = new ZoneBuilder(ZoneBuilder.PointsInputFormat.MAX);
-            List<HierarchyZone> zones = this.ZoneBuilder.GetZones(PointsCSV.text, this.BasepointsCSV.text, this.OptionpointsCSV.text);
+            List<HierarchyZone> zones = this.ZoneBuilder.GetZones(PointsCSV.text, this.BasepointsCSV.text, this.OptionpointsCSV.text, this.TextpointsCSV.text);
             ZoneObjects = new Dictionary<HierarchyZone, GameObject>();
             for(int i = 0; i < zones.Count; i++)
             {
@@ -56,6 +57,7 @@ namespace PlanImploder
             }
             cube.transform.position = (new Vector3(x,y,z));
             cube.transform.localScale = (new Vector3(zone.GetLength(), zone.GetWidth(), 300));
+            cube.name = zone.Label;
             return cube.transform;
         }
 
